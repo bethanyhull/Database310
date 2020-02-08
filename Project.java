@@ -9,15 +9,12 @@ public class Project {
 	public static void main(String[] args) {
 		try {
 			
-// TODO: student needs to replace port,db and pwd here:
+
 			Class.forName("com.mysql.jdbc.Driver").getConstructor().newInstance();
 			System.out.println();
 			System.out.println("JDBC driver loaded");
     Connection conn = makeConnection("51851", "FinalProject","DB2020");
 
-// TO DO:  add to the code here to run the appropriate function
-// when the getdata request is made 
-// at the command line
 
 		 if (args[0].equals("/?") ){
 			 	System.out.println("Usage:");
@@ -34,6 +31,7 @@ public class Project {
 			 	System.out.println("$java Project DeletePurchase <itemCode> ");
 				
 			}
+		 //TODO: Add querys here in switch statements
 			else if (args[0].equals( "CreateItem") ){
 			 	System.out.println("Running createItem");
 				runQuery(conn);
