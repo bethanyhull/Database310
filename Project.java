@@ -6,147 +6,117 @@ import com.jcraft.jsch.*;
 
 public class Project {
 
-	public static void main(String[] args) throws ClassNotFoundException, JSchException, SQLException {
-		if (args.length<5){
-			System.out.println("Usage DBConnectTest <BroncoUserid> <BroncoPassword> <sandboxUSerID> <sandbox password> <yourportnumber>");
+	public static void main(String[] args) {
+		try {
+			
+// TODO: student needs to replace port,db and pwd here:
+			Class.forName("com.mysql.jdbc.Driver").getConstructor().newInstance();
+			System.out.println();
+			System.out.println("JDBC driver loaded");
+    Connection conn = makeConnection("51851", "FinalProject","DB2020");
+
+// TO DO:  add to the code here to run the appropriate function
+// when the getdata request is made 
+// at the command line
+
+		 if (args[0].equals("/?") ){
+			 	System.out.println("Usage:");
+			 	System.out.println("$java Project CreateItem <itemCode> <itemDescription> <price>");
+			 	System.out.println("$java Project CreatePurchase <itemCode> <PurchaseQuantity> ");
+			 	System.out.println("$java Project CreateShipment <itemCode> <ShipmentQuantity> <shipmentDate>");
+			 	System.out.println("$java Project GetItems <itemCode>");
+			 	System.out.println("$java Project GetShipments <itemCode>");
+			 	System.out.println("$java Project GetPurchases <itemCode>");
+			 	System.out.println("$java Project ItemsAvailable <itemCode> ");
+			 	System.out.println("$java Project UpdateItem <itemCode> <price>");
+			 	System.out.println("$java Project DeleteItem <itemCode>");
+			 	System.out.println("$java Project DeleteShipment <itemCode> ");
+			 	System.out.println("$java Project DeletePurchase <itemCode> ");
+				
+			}
+			else if (args[0].equals( "CreateItem") ){
+			 	System.out.println("Running createItem");
+				runQuery(conn);
+			}
+			else {
+				System.out.println("No process requested");
+			}
+			conn.close();
+			System.out.println();
+			System.out.println("Database connection closed");
+			System.out.println();
+		} catch (Exception ex) {
+			// handle the error
+			System.err.println(ex);
 		}
-		else{
-			Connection con = null;
-			Session session = null;
-			Statement stmt = null, stmt2 = null;
-			try
-			{
-				String strSshUser = args[0];                  // SSH loging username
-				String strSshPassword = args[1];                   // SSH login password
-				String strSshHost = "onyx.boisestate.edu";          // hostname or ip or SSH server
-				int nSshPort = 22;                                    // remote SSH host port number
-				String strRemoteHost = "localhost";  // hostname or ip of your database server
-				int nLocalPort = 3367;  // local port number use to bind SSH tunnel
-				
-				String strDbUser = args[2];                    // database loging username
-				String strDbPassword = args[3];                    // database login password
-				int nRemotePort = Integer.parseInt(args[4]); // remote port number of your database 
-				
-				/*
-				 * STEP 0
-				 * CREATE a SSH session to ONYX
-				 * 
-				 * */
-				session = Project.doSshTunnel(strSshUser, strSshPassword, strSshHost, nSshPort, strRemoteHost, nLocalPort, nRemotePort);
-				
-				
-				/*
-				 * STEP 1 and 2
-				 * LOAD the Database DRIVER and obtain a CONNECTION
-				 * 
-				 * */
-				Class.forName("com.mysql.jdbc.Driver");
-				con = DriverManager.getConnection("jdbc:mysql://localhost:"+nLocalPort, strDbUser, strDbPassword);
+	}
+	public static void runQuery(Connection conn) {
 
-				/*
-				 * STEP 3
-				 * EXECUTE STATEMENTS (by using Transactions)
-				 * 
-				 * */
-				
-				con.setAutoCommit(false);//transaction block starts
+		Statement stmt = null;
+		ResultSet rs = null;
 
-				
-				stmt = con.createStatement();
-				
-				ResultSet resultSet = stmt.executeQuery("select * from `Company`.`employee`");
-				
-				/*TO INSERT INTO TABLES
-				 * You can also read from a file and store in a data structure of your choice*/
-				String[] data = {"boise", "nampa"};
-				stmt2 = insertLocations(con,data);
-				
-				con.commit(); //transaction block ends
-				
-				System.out.println("Transaction done!");
-				
-				/*
-				 * STEP 4
-				 * Use result sets (tables) to navigate through the results
-				 * 
-				 * */
-				
-				ResultSetMetaData rsmd = resultSet.getMetaData();
-
-				int columnsNumber = rsmd.getColumnCount();
-				while (resultSet.next()) {
-					for (int i = 1; i <= columnsNumber; i++) {
-						if (i > 1) System.out.print(",  ");
-						String columnValue = resultSet.getString(i);
-						System.out.print(columnValue + " " + rsmd.getColumnName(i));
-					}
-					System.out.println(" ");
-				}
-				
-				
-				
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT 1,2,3,4");  // no real code required... just a real db connection
+			// Now do something with the ResultSet ....
+			
+			rs.beforeFirst();
+			while (rs.next()) {
+				System.out.println(rs.getInt(1) 
+						+ ":" + rs.getString(2) 
+						+ ":" + rs.getString(3) 
+						+ ":" + rs.getString(4));
 			}
-			catch( SQLException e )
-			{
-				System.out.println(e.getMessage());
-				con.rollback(); // In case of any exception, we roll back to the database state we had before starting this transaction
+
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
 			}
-			finally{
-				
-				/*
-				 * STEP 5
-				 * CLOSE CONNECTION AND SSH SESSION
-				 * 
-				 * */
-				
-				if(stmt!=null)
+			if (stmt != null) {
+				try {
 					stmt.close();
-				
-				if(stmt2!=null)
-					stmt2.close();
-				
-				con.setAutoCommit(true); // restore dafault mode
-				con.close();
-				session.disconnect();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
 			}
-
 		}
 	}
 	
-	private static Session doSshTunnel( String strSshUser, String strSshPassword, String strSshHost, int nSshPort, String strRemoteHost, int nLocalPort, int nRemotePort ) throws JSchException
-	{
-		/*This is one of the available choices to connect to mysql
-		 * If you think you know another way, you can go ahead*/
-		
-		final JSch jsch = new JSch();
-		java.util.Properties configuration = new java.util.Properties();
-		configuration.put("StrictHostKeyChecking", "no");
-
-		Session session = jsch.getSession( strSshUser, strSshHost, 22 );
-		session.setPassword( strSshPassword );
-
-		session.setConfig(configuration);
-		session.connect();
-		session.setPortForwardingL(nLocalPort, strRemoteHost, nRemotePort);
-		return session;
+	public static Connection makeConnection(String port, String database, String password) {
+		try {
+			Connection conn = null;
+      
+      System.out.println("try to get a connection");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:" + port+ "/" + database+
+					"?verifyServerCertificate=false&useSSL=true&serverTimezone=UTC", "msandbox",
+					password);
+			// Do something with the Connection
+			System.out.println("Database " + database +" connection succeeded!");
+			System.out.println();
+			return conn;
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		}
+		return null;
 	}
 	
 	
-		private static Statement insertLocations(Connection con, String[] data) throws SQLException {
-			  String sql;
-			  java.sql.Statement stmt = null;
-			  stmt = con.createStatement();
-			  for(int i=0;i<data.length;i++){
-				  sql = "INSERT INTO `Company`.`dept_locations`(`dnumber`,`dlocation`)VALUES(1,'"+data[i]+"')";
-				  int res = stmt.executeUpdate(sql);
-				  System.out.println(res);
-			  }
-			  return stmt;
-
-
-	}
 		
-		private static Statement createItem(Connection con, String[] data) throws SQLException {
+		private static void createItem(Connection con, String[] data) throws SQLException {
 			String[] cleanData = removeFirstArg(data);
 			 String sql;
 			  java.sql.Statement stmt = null;
@@ -154,11 +124,11 @@ public class Project {
 			  sql = "CALL CreateItem(" + cleanData[0] + ", " + cleanData[1] + ", " + cleanData[2] + ");";
 			  ResultSet res = stmt.executeQuery(sql);
 			  System.out.println(res);
-			  return stmt;
+			  
 			
 		}
 		
-		private static Statement createPurchase(Connection con, String[] data) throws SQLException {
+		private static void createPurchase(Connection con, String[] data) throws SQLException {
 			String[] cleanData = removeFirstArg(data);
 			 String sql;
 			  java.sql.Statement stmt = null;
@@ -166,11 +136,11 @@ public class Project {
 			  sql = "CALL CreatePurchase(" + cleanData[0] + ", " + cleanData[1] + ");";
 			  ResultSet res = stmt.executeQuery(sql);
 			  System.out.println(res);
-			  return stmt;
+			  
 			
 		}
 		
-		private static Statement createShipment(Connection con, String[] data) throws SQLException {
+		private static void createShipment(Connection con, String[] data) throws SQLException {
 			String[] cleanData = removeFirstArg(data);
 			 String sql;
 			  java.sql.Statement stmt = null;
@@ -178,7 +148,7 @@ public class Project {
 			  sql = "CALL CreateShipment(" + cleanData[0] + ", " + cleanData[1] + ", " + cleanData[2] + ");";
 			  ResultSet res = stmt.executeQuery(sql);
 			  System.out.println(res);
-			  return stmt;
+			  
 			
 		}
 		
@@ -187,6 +157,7 @@ public class Project {
 			 String sql;
 			  java.sql.Statement stmt = null;
 			  stmt = con.createStatement();
+			  
 			  sql = "CALL GetItems(" + cleanData[0] + ");";
 			  ResultSet res = stmt.executeQuery(sql);
 			  System.out.println(res);
