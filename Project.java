@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.jcraft.jsch.*;
 
-public class JDBCexample {
+public class Project {
 
 	public static void main(String[] args) throws ClassNotFoundException, JSchException, SQLException {
 		if (args.length<5){
@@ -32,7 +32,7 @@ public class JDBCexample {
 				 * CREATE a SSH session to ONYX
 				 * 
 				 * */
-				session = JDBCexample.doSshTunnel(strSshUser, strSshPassword, strSshHost, nSshPort, strRemoteHost, nLocalPort, nRemotePort);
+				session = Project.doSshTunnel(strSshUser, strSshPassword, strSshHost, nSshPort, strRemoteHost, nLocalPort, nRemotePort);
 				
 				
 				/*
@@ -145,5 +145,66 @@ public class JDBCexample {
 
 
 	}
+		
+		private static Statement createItem(Connection con, String[] data) throws SQLException {
+			String[] cleanData = removeFirstArg(data);
+			 String sql;
+			  java.sql.Statement stmt = null;
+			  stmt = con.createStatement();
+			  sql = "CALL CreateItem(" + cleanData[0] + ", " + cleanData[1] + ", " + cleanData[2] + ");";
+			  ResultSet res = stmt.executeQuery(sql);
+			  System.out.println(res);
+			  return stmt;
+			
+		}
+		
+		private static Statement createPurchase(Connection con, String[] data) throws SQLException {
+			String[] cleanData = removeFirstArg(data);
+			 String sql;
+			  java.sql.Statement stmt = null;
+			  stmt = con.createStatement();
+			  sql = "CALL CreatePurchase(" + cleanData[0] + ", " + cleanData[1] + ");";
+			  ResultSet res = stmt.executeQuery(sql);
+			  System.out.println(res);
+			  return stmt;
+			
+		}
+		
+		private static Statement createShipment(Connection con, String[] data) throws SQLException {
+			String[] cleanData = removeFirstArg(data);
+			 String sql;
+			  java.sql.Statement stmt = null;
+			  stmt = con.createStatement();
+			  sql = "CALL CreateShipment(" + cleanData[0] + ", " + cleanData[1] + ", " + cleanData[2] + ");";
+			  ResultSet res = stmt.executeQuery(sql);
+			  System.out.println(res);
+			  return stmt;
+			
+		}
+		
+		private static Statement getItems(Connection con, String[] data) throws SQLException {
+			String[] cleanData = removeFirstArg(data);
+			 String sql;
+			  java.sql.Statement stmt = null;
+			  stmt = con.createStatement();
+			  sql = "CALL GetItems(" + cleanData[0] + ");";
+			  ResultSet res = stmt.executeQuery(sql);
+			  System.out.println(res);
+			  return stmt;
+			
+		}
+		
+		
+		// removes the first arguement of the string so only the data is left
+		private static String[] removeFirstArg(String[] args) {
+			String[] newArgs = new String[args.length - 1]; 
+			
+			for(int i = 0; i < newArgs.length; i++) {
+				newArgs[i] = args[i+1];
+			}
+			
+			return newArgs;
+			
+		}
 
 }
