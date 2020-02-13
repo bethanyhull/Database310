@@ -32,8 +32,9 @@ public class Project {
 				
 			}
 		 //TODO: Add querys here in switch statements
-			else if (args[0].equals( "CreateItem") ){
+			else if (args[0].equals( "GetItems") ){
 			 	System.out.println("Running createItem");
+			 	getItems(conn, args);
 				runQuery(conn);
 			}
 			else {
