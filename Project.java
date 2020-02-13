@@ -64,10 +64,10 @@ public class Project {
 			
 			rs.beforeFirst();
 			while (rs.next()) {
-				System.out.println(rs.getInt(1) 
-						+ ":" + rs.getString(2) 
-						+ ":" + rs.getString(3) 
-						+ ":" + rs.getString(4));
+				System.out.println(String.format("%1$-" + 5 + "s", rs.getInt(1))
+						+ ":" + String.format("%1$-" + 15 + "s", rs.getString(2)) 
+						+ ":" + String.format("%1$-" + 20 + "s", rs.getString(3))
+						+ ":" + String.format("%1$-" + 5 + "s", rs.getString(4)));
 			}
 
 		} catch (SQLException ex) {
