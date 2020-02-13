@@ -32,12 +32,12 @@ public class Project {
 				
 			}
 		 //TODO: Add querys here in switch statements
-			else if (args[0].equals( "GetItems") ){
-				conn.setAutoCommit(false);
-			 	System.out.println("Running createItem");
-			 	getItems(conn, args);
-			 	conn.commit();
-//				runQuery(conn);
+			else if (args[0].equals( "test") ){
+				
+//			 	System.out.println("Running createItem");
+//			 	getItems(conn, args);
+			 	
+				runQuery(conn);
 			}
 			else {
 				System.out.println("No process requested");
@@ -59,7 +59,7 @@ public class Project {
 
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT 1,2,3,4");  // no real code required... just a real db connection
+			rs = stmt.executeQuery("SELECT * FROM Item");  // no real code required... just a real db connection
 			// Now do something with the ResultSet ....
 			
 			rs.beforeFirst();
