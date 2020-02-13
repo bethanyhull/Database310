@@ -33,9 +33,11 @@ public class Project {
 			}
 		 //TODO: Add querys here in switch statements
 			else if (args[0].equals( "GetItems") ){
+				conn.setAutoCommit(false);
 			 	System.out.println("Running createItem");
 			 	getItems(conn, args);
-				runQuery(conn);
+			 	conn.commit();
+//				runQuery(conn);
 			}
 			else {
 				System.out.println("No process requested");
@@ -45,6 +47,7 @@ public class Project {
 			System.out.println("Database connection closed");
 			System.out.println();
 		} catch (Exception ex) {
+			
 			// handle the error
 			System.err.println(ex);
 		}
