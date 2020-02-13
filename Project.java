@@ -59,7 +59,7 @@ public class Project {
 
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM Item");  // no real code required... just a real db connection
+			rs = stmt.executeQuery("Call GetItems(\"A1\")");  // no real code required... just a real db connection
 			// Now do something with the ResultSet ....
 			
 			rs.beforeFirst();
