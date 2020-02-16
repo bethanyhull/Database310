@@ -361,16 +361,16 @@ public class Project {
 			// Now do something with the ResultSet ....
 
 			rs.beforeFirst();
-
-			System.out.println(String.format("%1$-" + 5 + "s", "Shipment ID")
+	
+			System.out.println(String.format("%1$-" + 15 + "s", "Purchase ID")
 					+ String.format("%1$-" + 15 + "s", "Item ID") 
-					+ String.format("%1$-" + 5 + "s", "Quantity")
+					+ String.format("%1$-" + 10 + "s", "Quantity")
 					+ String.format("%1$-" + 10 + "s", "Purchase Date"));
 			while (rs.next()) {
-				System.out.println(String.format("%1$-" + 5 + "s", rs.getInt(1))
-						+ "+" + String.format("%1$-" + 15 + "s", rs.getString(2)) 
-						+ ":" + String.format("%1$-" + 5 + "s", rs.getString(3))
-						+ ":" + String.format("%1$-" + 10 + "s", rs.getString(4)));
+				System.out.println(String.format("  %1$-" + 15 + "s", rs.getInt(1))
+						+ String.format("%1$-" + 15 + "s", rs.getString(2)) 
+						+ String.format("%1$-" + 10 + "s", rs.getString(3))
+						+ String.format("%1$-" + 10 + "s", rs.getString(4)));
 			}
 
 		} catch (SQLException ex) {
