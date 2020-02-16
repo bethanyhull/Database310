@@ -399,8 +399,58 @@ public class Project {
 
 	}
 	
-	private static void ItemsAvailable(Connection conn, String[] args) {
-		// TODO Auto-generated method stub
+	private static void ItemsAvailable(Connection conn, String[] data) {
+		String[] cleanData = removeFirstArg(data);
+		String sql;
+		sql = "CALL ItemsAvailable(\"" + cleanData[0] + "\");";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);  // no real code required... just a real db connection
+			// Now do something with the ResultSet ....
+
+			rs.beforeFirst();
+
+			System.out.println(String.format("%1$-" + 10 + "s", "Item Code")
+					+ String.format("%1$-" + 17 + "s", "Item Description") 
+					+ String.format("%1$-" + 14 + "s", "Total Shipped")
+					+ String.format("%1$-" + 16 + "s", "Total Purchased")
+					+ String.format("%1$-" + 16 + "s", "Total Available"));
+			while (rs.next()) {
+				System.out.println(String.format("%1$-" +10 + "s", rs.getInt(1))
+						+ String.format("%1$-" + 17 + "s", rs.getString(2)) 
+						+ String.format("%1$-" + 14 + "s", rs.getInt(3))
+						+ String.format("%1$-" + 16 + "s", rs.getInt(4))
+						+ String.format("%1$-" + 16 + "s", rs.getInt(5)));
+			}
+
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
+			}
+		}
 		
 	}
 
