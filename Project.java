@@ -507,7 +507,7 @@ public class Project {
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);  			
-			System.out.println("Shipment #" + cleanData[0] + " deleted");
+			System.out.println("Most recent shipment for #" + cleanData[0] + " deleted");
 
 
 		} catch (SQLException ex) {
@@ -548,7 +548,7 @@ public class Project {
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);  			
-			System.out.println("Purchase for item #" + cleanData[0] + " deleted");
+			System.out.println("Most recent purchase for item #" + cleanData[0] + " deleted");
 
 
 		} catch (SQLException ex) {
