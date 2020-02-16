@@ -455,26 +455,166 @@ public class Project {
 	}
 
 
-	private static void updateItem(Connection conn, String[] args) {
-		// TODO Auto-generated method stub
+	private static void updateItem(Connection conn, String[] data) {
+		String[] cleanData = removeFirstArg(data);
+		String sql;
+		sql = "CALL updateItem(\"" + cleanData[0] + "\", \"" + cleanData[1] + "\");";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);  			
+			System.out.println("Item #" + cleanData[0] + " updated");
+
+
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
+			}
+		}
 		
 	}
 
 
-	private static void deleteShipment(Connection conn, String[] args) {
-		// TODO Auto-generated method stub
+	private static void deleteShipment(Connection conn, String[] data) {
+		String[] cleanData = removeFirstArg(data);
+		String sql;
+		sql = "CALL deleteShipment(\"" + cleanData[0] + "\");";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);  			
+			System.out.println("Shipment #" + cleanData[0] + " deleted");
+
+
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
+			}
+		}
 		
 	}
 
 
-	private static void deletePurchase(Connection conn, String[] args) {
-		// TODO Auto-generated method stub
+	private static void deletePurchase(Connection conn, String[] data) {
+		String[] cleanData = removeFirstArg(data);
+		String sql;
+		sql = "CALL deletePurchase(\"" + cleanData[0] + "\");";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);  			
+			System.out.println("Purchase for item #" + cleanData[0] + " deleted");
+
+
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
+			}
+		}
 		
 	}
 
 
-	private static void deleteItem(Connection conn, String[] args) {
-		// TODO Auto-generated method stub
+	private static void deleteItem(Connection conn, String[] data) {
+		String[] cleanData = removeFirstArg(data);
+		String sql;
+		sql = "CALL deleteItem(\"" + cleanData[0] + "\");";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);  			
+			System.out.println("Item #" + cleanData[0] + " deleted");
+
+
+		} catch (SQLException ex) {
+			// handle any errors
+			System.err.println("SQLException: " + ex.getMessage());
+			System.err.println("SQLState: " + ex.getSQLState());
+			System.err.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release resources in a finally{} block
+			// in reverse-order of their creation if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException sqlEx) {
+				} // ignore
+				stmt = null;
+			}
+		}
 		
 	}
 
