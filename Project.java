@@ -87,6 +87,8 @@ public class Project {
 	}
 
 
+
+
 	public static Connection makeConnection(String port, String database, String password) {
 		try {
 			Connection conn = null;
@@ -394,6 +396,35 @@ public class Project {
 			}
 		}
 
+	}
+	
+	private static void ItemsAvailable(Connection conn, String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void updateItem(Connection conn, String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void deleteShipment(Connection conn, String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void deletePurchase(Connection conn, String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void deleteItem(Connection conn, String[] args) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
