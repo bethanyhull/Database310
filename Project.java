@@ -421,7 +421,7 @@ public class Project {
 					+ String.format("%1$-" + 16 + "s", "Total Purchased")
 					+ String.format("%1$-" + 16 + "s", "Total Available"));
 			while (rs.next()) {
-				System.out.println(String.format("%1$-" +10 + "s", rs.getInt(1))
+				System.out.println(String.format("%1$-" +10 + "s", rs.getString(1))
 						+ String.format("%1$-" + 17 + "s", rs.getString(2)) 
 						+ String.format("%1$-" + 14 + "s", rs.getInt(3))
 						+ String.format("%1$-" + 16 + "s", rs.getInt(4))
