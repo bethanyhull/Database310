@@ -33,13 +33,44 @@ public class Project {
 				System.out.println("$java Project DeleteShipment <itemCode> ");
 				System.out.println("$java Project DeletePurchase <itemCode> ");
 				break;
-				
+							
 			case "createitem" :
 				createItem(conn, args);
+                		break;
+            		case "createpurchase" :
+              			createPurchase(conn, args);
+                		break;
+            		case "createshipment" :
+              			createShipment(conn, args);
+              			break;
+
 			case "getitems" : 
 				getItems(conn, args);
 				break;
-				
+			case "getpurchases" : 
+				getPurchases(conn, args);
+				break;
+			case "getshipments" : 
+				getShipments(conn, args);
+				break;		
+
+			case "deleteitem" : 
+				deleteItem(conn, args);
+				break;
+			case "deletepurchase" : 
+				deletePurchase(conn, args);
+				break;
+			case "deleteshipment" : 
+				deleteShipment(conn, args);
+				break;
+
+			case "updateitem" :
+				updateItem(conn, args);
+                		break;
+			case "itemsavailable" :
+				ItemsAvailable(conn, args);
+               			break;
+					
 			default :
 				System.out.println("No process requested");
 			}
